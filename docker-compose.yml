@@ -1,0 +1,12 @@
+version: '1.0'
+
+services:
+  eureka-server:
+    image: joxha11/eureka-server
+    ports:
+      - 8761:8761
+
+  zuul-balancer:
+    image: joxha11/balancer-zuul
+    ports:
+      - 8090:8090
