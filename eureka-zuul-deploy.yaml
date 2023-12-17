@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-zuul-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-zuul
+  template:
+    metadata:
+      labels:
+        app: eureka-zuul
+    spec:
+      containers:
+      - name: eureka-server
+        image: joxha11/eureka-server
+        ports:
+        - containerPort: 8761
+      - name: zuul-balancer
+        image: joxha11/balancer-zuul
+        ports:
+        - containerPort: 8090
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zuul-service
+spec:
+  selector:
+    app: eureka-zuul
+  ports:
+    - protocol: TCP
+      port: 8090
+      targetPort: 8090
+  type: NodePort
